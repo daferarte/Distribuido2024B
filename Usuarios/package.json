@@ -10,7 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^5.19.1",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "prisma": "^5.19.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.4"
