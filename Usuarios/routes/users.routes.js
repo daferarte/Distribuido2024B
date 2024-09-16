@@ -22,7 +22,7 @@ const {AddUsers, ShowUsers, DeleteUsers, EditUsers, ShowUser} = require('../cont
 router.get('/', ShowUsers);
 router.post('/', AddUsers);
 router.delete('/', DeleteUsers);
-router.put('/', EditUsers);
+router.put('/:id', EditUsers);
 router.get('/:id', ShowUser);
 
 module.exports = router;
