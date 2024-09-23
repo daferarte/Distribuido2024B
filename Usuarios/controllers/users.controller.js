@@ -9,6 +9,7 @@
 const {response, request} = require('express');
 const { PrismaClient } = require('@prisma/client');
 const {Encrypt, Decrypt} = require('../middlewares/validate');
+const {CreateJWT} = require('../middlewares/jwt');
 
 const prisma = new PrismaClient();
 
@@ -112,7 +113,15 @@ const Login = async(req=request, res=response)=>{
     }));
 
     if(user){
-        (Decrypt(user.password)==password)?res.json({user}):res.json({"msn": "Contraseña incorrecta"})
+        if(Decrypt(user.password)==password){
+            userJWT = CreateJWT(user)
+            res.json({
+                user,
+                userJWT
+            })
+        }else{
+            res.json({"msn": "Contraseña incorrecta"})
+        }
     }else{
         res.json({"msn": "Usuario no encontrado"})
     }
