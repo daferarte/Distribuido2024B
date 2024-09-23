@@ -11,7 +11,7 @@
  */
 
 const express = require('express');
-
+const cors = require('cors');
 /**
  * @class Server
  * clase servidor que inicia el servicio de express
@@ -27,11 +27,13 @@ class Server{
     }
 
     middlewares(){
+        this.app.use(cors());
         this.app.use(express.json());
     }
 
     routes(){
         this.app.use('/users', require('../routes/users.routes'));
+        this.app.use('/persons', require('../routes/persons.routes'));
     }
 
     listen(){

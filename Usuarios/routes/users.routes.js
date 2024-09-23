@@ -14,15 +14,16 @@ const router= Router();
  * Importando los metodos
  */
 
-const {AddUsers, ShowUsers, DeleteUsers, EditUsers, ShowUser} = require('../controllers/users.controller');
+const {AddUsers, ShowUsers, DeleteUsers, EditUsers, ShowUser, Login} = require('../controllers/users.controller');
 
 /**
  * Rutas
  */
 router.get('/', ShowUsers);
 router.post('/', AddUsers);
-router.delete('/', DeleteUsers);
+router.delete('/:id', DeleteUsers);
 router.put('/:id', EditUsers);
 router.get('/:id', ShowUser);
+router.post('/Login', Login);
 
 module.exports = router;

@@ -8,6 +8,7 @@
 
 const {response, request} = require('express');
 const { PrismaClient } = require('@prisma/client');
+const {Encrypt, Decrypt} = require('../middlewares/validate');
 
 const prisma = new PrismaClient();
 
@@ -27,7 +28,9 @@ const ShowUsers = async(req=request, res=response)=>{
 
 const AddUsers = async(req=request, res=response)=>{
 
-    const { email, password } = req.body;
+    let { email, password } = req.body;
+
+    password = Encrypt(password);
 
     const result = await prisma.users.create({
         data: {
@@ -94,11 +97,35 @@ const DeleteUsers = async(req=request, res=response)=>{
     });
 };
 
+const Login = async(req=request, res=response)=>{
+
+    let { email, password } = req.body;
+
+    const user = await prisma.users.findFirst({
+        where:{
+            email
+        }
+    }).catch(err=>{
+        return err.message;
+    }).finally((async ()=>{
+        await prisma.$disconnect();
+    }));
+
+    if(user){
+        (Decrypt(user.password)==password)?res.json({user}):res.json({"msn": "Contraseña incorrecta"})
+    }else{
+        res.json({"msn": "Usuario no encontrado"})
+    }
+    
+
+};
+
 
 module.exports = {
     AddUsers,
     ShowUsers,
     ShowUser,
     EditUsers,
-    DeleteUsers
+    DeleteUsers,
+    Login
 };
