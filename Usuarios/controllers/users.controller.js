@@ -111,10 +111,11 @@ const Login = async(req=request, res=response)=>{
     }).finally((async ()=>{
         await prisma.$disconnect();
     }));
-
+    
     if(user){
         if(Decrypt(user.password)==password){
-            userJWT = CreateJWT(user)
+            userJWT = Encrypt(CreateJWT(user));
+            
             res.json({
                 user,
                 userJWT

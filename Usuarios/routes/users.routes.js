@@ -15,15 +15,15 @@ const router= Router();
  */
 
 const {AddUsers, ShowUsers, DeleteUsers, EditUsers, ShowUser, Login} = require('../controllers/users.controller');
-
+const { validateJWT } = require('../middlewares/jwt');
 /**
  * Rutas
  */
 router.get('/', ShowUsers);
-router.post('/', AddUsers);
-router.delete('/:id', DeleteUsers);
-router.put('/:id', EditUsers);
-router.get('/:id', ShowUser);
+router.post('/', validateJWT, AddUsers);
+router.delete('/:id',validateJWT, DeleteUsers);
+router.put('/:id',validateJWT, EditUsers);
+router.get('/:id',validateJWT, ShowUser);
 router.post('/Login', Login);
 
 module.exports = router;
