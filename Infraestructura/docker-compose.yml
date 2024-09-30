@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  
+  users_api:
+    build:
+      context: ./APIS
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./APIS/usuarios:/usr/userAPI
+    
+    
