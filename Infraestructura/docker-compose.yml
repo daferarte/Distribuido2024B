@@ -2,11 +2,20 @@ version: "3.8"
 
 services:
   
+  webserver:
+    build: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - users_api
+    networks:
+      - dev_network
+
   users_api:
     build:
       context: ./APIS
     deploy:
-      replicas: 9
+      replicas: 10
       resources:
         limits:
           cpus: "0.2"
