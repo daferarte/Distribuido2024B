@@ -5,9 +5,53 @@ services:
   users_api:
     build:
       context: ./APIS
+    deploy:
+      replicas: 9
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: 512M
+        reservations:
+          cpus: "0.1"
+          memory: 256M
     ports:
-      - "3000:3000"
+      - "3000-3010:3000"
     volumes:
       - ./APIS/usuarios:/usr/userAPI
+    networks:
+      - dev_network
+  
+  db_dev:
+    image: postgres
+    container_name: users_db_dev
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: 4GB
+        reservations:
+          cpus: "0.1"
+          memory: 1GB
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: 12345
+    volumes:
+      - ./users_data_dev:/var/lib/postgresql/data
+    networks:
+      - dev_network
     
-    
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: dev_pgadmin
+    ports:
+      - 8888:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: dani@dani.com
+      PGADMIN_DEFAULT_PASSWORD: 12345
+    networks:
+      - dev_network
+
+networks:
+  dev_network:
+    driver: bridge
